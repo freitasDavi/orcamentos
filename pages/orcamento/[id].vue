@@ -1,7 +1,6 @@
 
 <template>
     <UContainer>
-        <p>Teste{{ $route.params.id }}</p>
         <template v-if="!isFetching">
             <Form :is-edit="true" :initial-value="initialData" />
         </template>
@@ -17,7 +16,7 @@ const isFetching = ref<boolean>(true);
 const initialData = ref<Orcamento>();
 
 onMounted(async () => {
-    const data = await $fetch<Promise<Orcamento>>(`https://localhost:7059/api/Orcamentos/${route.params.id}`)
+    const data = await $fetch<Promise<Orcamento>>(`https://localhost:7172/api/Orcamentos/${route.params.id}`)
 
     initialData.value = data;
     isFetching.value = false;

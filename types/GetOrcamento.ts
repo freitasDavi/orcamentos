@@ -2,9 +2,8 @@
 
 
 export type Orcamento = {
-    id: number;
-    codigoCliente: number;
-    outrosGastos: number;
+    id: string;
+    codigoCliente: string;
     validade: Date;
     emissao: Date;
     valorTotal:number;
@@ -12,12 +11,13 @@ export type Orcamento = {
 
 
 export type PecasOrcamento = {
+    id: string;
     nome: string;
     descricao: string;
     porcentagem: number;
     quantidade: number;
     valorUnitario: number;
     valorTotal: number;
-    codigoPeca: number;
-    codigoOrcamento: number;
+    codigoPeca: string;
+    codigoOrcamento: string;
 }

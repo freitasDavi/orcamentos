@@ -22,9 +22,6 @@ const columns = [{
     key: 'codigoCliente',
     label: 'Código Cliente'
 }, {
-    key: 'outrosGastos',
-    label: 'Adicionais'
-}, {
     key: 'valorTotal',
     label: 'Valor'
 }, {
@@ -42,7 +39,7 @@ const data = ref([])
 
 onMounted( async () => {
     isLoading.value = true;
-    const res = await $fetch<[]>('https://localhost:7059/api/Orcamentos')
+    const res = await $fetch<[]>('https://localhost:7172/api/Orcamentos')
 
     data.value = res;
     isLoading.value = false;
