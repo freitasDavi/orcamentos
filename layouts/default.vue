@@ -12,13 +12,11 @@
                     active: 'text-green-500'
                 }
             }" />
-            <UButton 
+            <Button 
                 v-if="token"
-                icon="i-heroicons-arrow-left-end-on-rectangle"
-                size="md"
-                variant="solid"
+                icon="pi pi-sign-out"
+                severity="danger"
                 label="Logout"
-                color="red"
                 @click="onLogout"
             />
             </section>
@@ -27,13 +25,12 @@
             <div 
                 v-if="!noReturnLinks.includes($route.path)"
                 class="flex gap-2 mx-36 mb-10">
-                <UButton color="white" @click="$router.back()">
-                    <UIcon name="i-heroicons-arrow-small-left" />
-                </UButton>
+                <Button icon="pi pi-arrow-left" severity="secondary" color="white" @click="$router.back()" />
                 <h2 class="text-3xl">Título</h2>
             </div>
            <slot /> 
         </div>
+        <Toast />
     </main>
 </template>
 

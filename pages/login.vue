@@ -46,10 +46,25 @@ const handleLogin = async () => {
         })
 
         
-        toast.add({ title: "Uepa", color: "fuchsia", timeout: 5000, callback: () => handleSuccess(response.msg) })
+        toast.add({
+            severity: 'success',
+            summary: "Sucesso",
+            detail: "Login realizado com sucesso",
+            life: 1995
+        })
+
+        setTimeout(() => {
+            handleSuccess(response.msg)
+        }, 2000)
+        //toast.add({ title: "Uepa", color: "fuchsia", timeout: 5000, callback: () => handleSuccess(response.msg) })
     } catch (err) {
         console.log(err);
-        toast.add({ title: "Uepa", color: "red" })
+        toast.add({ 
+            summary: "Opa",
+            detail: "Login ou senha incorretos",
+            severity: "error",
+            life: 2000
+         })
     }
 }
 

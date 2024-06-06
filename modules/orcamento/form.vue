@@ -1,63 +1,49 @@
-<template>    
+<template>
     <UCard>
-            <template #header>
-                <h1 v-if="isEdit" class="text-2xl">Orçamento X</h1>
-                <h1 v-else class="text-2xl">Novo orçamento</h1>
-            </template>
+        <template #header>
+            <h1 v-if="isEdit" class="text-2xl">Orçamento X</h1>
+            <h1 v-else class="text-2xl">Novo orçamento</h1>
+        </template>
 
-            <section class="w-1/2">
-                <form @submit.prevent="createOrcamento">
-                   
-                  
-                    <div class="flexRow items-end">
-                        <div class="flex flex-1 items-end gap-1">
-                            <UFormGroup label="Cliente" class="flex-1">
-                                <USelect v-model="cliente" :options="clientes" option-attribute="nome" value-attribute="id" />
-                            </UFormGroup>
+        <section class="bg-yellow-300">
+            <form @submit.prevent="createOrcamento">
+                <section class="flex gap-2 items-end">
+                    <div class="flex-1">
+                        <label for="cliente">Cliente</label>
+                        <InputGroup>
+                            <Dropdown id="cliente" class="w-full h-8" v-model="cliente" :options="clientes"
+                                option-label="nome" option-value="id" />
                             <CadastroCliente />
-                        </div>
-
-                        <UFormGroup label="Data de Validade" class="flex-1">
-                            <UPopover :popper="{ placement: 'bottom-start' }" class="w-6">
-                                <UButton 
-                                    icon="i-heroicons-calendar-days"
-                                    :label="format(dataValidade, 'd MMM, yyy', { locale: ptBR })" 
-                                />
-                            
-                                <template #panel="{ close }">
-                                    <UiDatePicker v-model="dataValidade" @close="close" />
-                                </template>
-                            </UPopover> 
-                        </UFormGroup>
-
-                        <!-- <UFormGroup label="Valor total" class="flex-1">
-                            <UInput v-model="valorTotal" />
-                        </UFormGroup> -->
-                        <UButton type="subit" size="sm" class="h-8">Salvar</UButton>
+                        </InputGroup>
                     </div>
-                    
-                </form>
-            </section>
+                    <Calendar v-model="dataValidade" dateFormat="dd/mm/yy" showIcon class="h-8 flex-1" />
+                </section>
+                <div>
+                    <Button type="submit" class="h-8" label="Salvar" />
+                </div>
+            </form>
+        </section>
 
-            <template #footer>
-                <PecaOrcamentoForm :codigo-orcamento="id" ref="modal" v-on:update="refetchItems(id)" />
-                <UTable :rows="orcItems" :columns="columns">
-                    <template #actions-data="{ row }">
-                        <UButton
-                            @click="onClickEditItem(row)"
-                            color="gray"
-                            variant="ghost"
-                            icon="i-heroicons-pencil-square-solid"
-                        />
+        <template #footer>
+            <PecaOrcamentoForm :codigo-orcamento="id" ref="modal" v-on:update="refetchItems(id)" />
+
+
+            <DataTable :value="orcItems" table-style="min-witdh: 50rem">
+                <Column field="nome" header="Nome"></Column>
+                <Column field="quantidade" header="Quantidade"></Column>
+                <!-- <Column field="valorUnitario" header="Valor unitário"></Column> -->
+                <Column field="valorTotal" header="Valor total"></Column>
+                <Column header="Ações">
+                    <template #body="slotProps">
+                        <Button icon="pi pi-pencil" @click="onClickEditItem(slotProps.data)" />
                     </template>
-                </UTable>
-            </template>
-        </UCard>
+                </Column>
+            </DataTable>
+        </template>
+    </UCard>
 </template>
 
 <script setup lang="ts">
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale";
 import type { GetClientesCombo } from "~/types/Clientes";
 import type { Orcamento, PecasOrcamento } from "~/types/GetOrcamento";
 import PecaOrcamentoForm from "../peca-orcamento/form.vue";
@@ -74,28 +60,6 @@ const dataValidade = ref(new Date())
 const modal = ref<InstanceType<typeof PecaOrcamentoForm> | null>(null)
 const orcItems = ref<PecasOrcamento[]>([]);
 
-const columns = [
-    {
-        key: 'nome',
-        label: 'Nome'
-    },
-    {
-        key: 'quantidade',
-        label: 'Quantidade'
-    },
-    {
-        key: 'valorUnitario',
-        label: 'Valor unitário'
-    },
-    {
-        key: 'valorTotal',
-        label: 'Valor total'
-    },
-    {
-        key: 'actions',
-        label: 'Ações'
-    }
-]
 
 const props = defineProps<{
     isEdit: Boolean,
@@ -126,7 +90,7 @@ const createOrcamento = async () => {
     })
 
     id.value = orcId;
-    toast.add({ title: "Orçamento salvo com sucesso", color: "fuchsia", timeout: 2000})
+    toast.add({ detail: "Orçamento salvo com sucesso", severity: "success", life: 2000})
 }
 
 watch(id, async (newId) => {
@@ -160,6 +124,7 @@ const onClickEditItem = (row: PecasOrcamento) => {
     display: flex;
     justify-content: baseline;
     gap: 16px;
+    width: 100%;
 }
 
 </style>

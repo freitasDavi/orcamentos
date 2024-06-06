@@ -1,6 +1,7 @@
 <template>
 
-    <UButton icon="i-ph-plus" @click="isOpen = true" class="h-8 text-white" />
+    <!-- <UButton icon="i-ph-plus" @click="isOpen = true" class="h-8 text-white" /> -->
+    <Button icon="pi pi-plus" class="h-8"  size="small" aria-label="Novo cliente" @click="isOpen = true" />
     <UModal v-model="isOpen" :prevent-close="true">
         <UCard>
             <template #header>
