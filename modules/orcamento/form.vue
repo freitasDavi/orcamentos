@@ -10,9 +10,12 @@
                    
                   
                     <div class="flexRow items-end">
-                        <UFormGroup label="Cliente" class="flex-1">
-                            <USelect v-model="cliente" :options="clientes" option-attribute="nome" value-attribute="id" />
-                        </UFormGroup>
+                        <div class="flex flex-1 items-end gap-1">
+                            <UFormGroup label="Cliente" class="flex-1">
+                                <USelect v-model="cliente" :options="clientes" option-attribute="nome" value-attribute="id" />
+                            </UFormGroup>
+                            <CadastroCliente />
+                        </div>
 
                         <UFormGroup label="Data de Validade" class="flex-1">
                             <UPopover :popper="{ placement: 'bottom-start' }" class="w-6">
@@ -58,6 +61,7 @@ import { ptBR } from "date-fns/locale";
 import type { GetClientesCombo } from "~/types/Clientes";
 import type { Orcamento, PecasOrcamento } from "~/types/GetOrcamento";
 import PecaOrcamentoForm from "../peca-orcamento/form.vue";
+import CadastroCliente from "../clientes/CadastroModal.vue";
 
 const toast = useToast();
 

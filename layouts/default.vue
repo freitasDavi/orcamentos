@@ -19,11 +19,14 @@
                 variant="solid"
                 label="Logout"
                 color="red"
+                @click="onLogout"
             />
             </section>
         </div>
         <div class="col-span-9 py-20 px-2">
-            <div class="flex gap-2 mx-36 mb-10">
+            <div 
+                v-if="!noReturnLinks.includes($route.path)"
+                class="flex gap-2 mx-36 mb-10">
                 <UButton color="white" @click="$router.back()">
                     <UIcon name="i-heroicons-arrow-small-left" />
                 </UButton>
@@ -36,7 +39,11 @@
 
 
 <script setup lang="ts">
+    const route = useRoute();
+    const router = useRouter();
     const token = useState('token')
+
+    const noReturnLinks = ref(['/', '/login'])
 
     const links = [{
         label: 'Home',
@@ -51,5 +58,11 @@
         icon: 'i-heroicons-banknotes',
         to: '/orcamento'  
     }]
+
+
+    const onLogout = () => {
+        token.value = "";
+        router.push("/login")
+    }
 
 </script>

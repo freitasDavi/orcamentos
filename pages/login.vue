@@ -1,18 +1,23 @@
 
 
 <template>
-    <UContainer>
-        <UCard>
+    <UContainer class="w-2/4 h-full flex items-center justify-center">
+        <UCard class="w-2/3 ">
             <template #header>
                 Login
             </template>
-            <UFormGroup label="Email">
-                <UInput placeholder="email@mail.com" v-model="email" />
-            </UFormGroup>
-            <UFormGroup label="Password">
-                <UInput placeholder="*****" v-model="password" />
-            </UFormGroup>
-            <UButton @click="handleLogin">Login</UButton>
+            <section class="flex flex-col gap-6">
+                <UFormGroup label="Email">
+                    <UInput placeholder="email@mail.com" v-model="email" />
+                </UFormGroup>
+                <UFormGroup label="Password">
+                    <UInput placeholder="*****" v-model="password" type="password" />
+                </UFormGroup>
+                <div class="w-ful flex justify-end gap-2">
+                    <UButton @click="handleLogin" size="md" color="red">Registrar</UButton>
+                    <UButton @click="handleLogin" size="md">Login</UButton>
+                </div>
+            </section>
         </UCard>
     </UContainer>
 </template>
