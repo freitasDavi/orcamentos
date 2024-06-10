@@ -1,10 +1,10 @@
 
 <template>
-    <UContainer>
+    <div>
         <template v-if="!isFetching">
             <Form :is-edit="true" :initial-value="initialData" />
         </template>
-    </UContainer>
+    </div>
 </template>
 
 <script setup lang="ts">

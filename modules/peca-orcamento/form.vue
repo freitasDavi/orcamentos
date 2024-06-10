@@ -1,65 +1,73 @@
 <template>
     <div>
-        <UButton label="Novo" @click="isOpen = true" :disabled="codigoOrcamento.length === 0" />
+        <Button label="Novo" @click="isOpen = true" :disabled="codigoOrcamento.length === 0" />
 
-        <UModal v-model="isOpen" :prevent-close="true">
-            <UCard>
-                <template #header>
-                    <div class="w-full flex justify-between items-end">
-                        <h3 class="text-xl">Item do orçamento</h3>
-                        <UButton icon="i-heroicons-x-mark-20-solid" @click="fecharELimparCampos" color="white" />
-                    </div>
-                </template>
-
+        <Dialog v-model:visible="isOpen" modal header="Item">
+            <div>
                 <section class="gridNaoFunciona">
+                    <FloatLabel for="peca">
+                    <Dropdown id="peca" class="w-full" v-model="form.codigoPeca" :options="pecas"
+                                option-label="descricao" option-value="id" @update:model-value="(id: string) => onChangeSelectedPeca(id)" />
+                                <label for="peca">Peça</label>
+                    </FloatLabel>
 
-                    <UFormGroup label="Peça">
-                        <USelect v-model="form.codigoPeca" :options="pecas" option-attribute="descricao"
-                            value-attribute="id" @change="(id: string) => onChangeSelectedPeca(id)" />
-                    </UFormGroup>
+                    <FloatLabel>
+                        <InputText id="nome" placeholder="Nome" v-model="form.nome" />
+                        <label for="nome">Nome</label>
+                    </FloatLabel>
 
-
-                    <UFormGroup label="Nome">
-                        <UInput placeholder="Nome" v-model="form.nome" />
-                    </UFormGroup>
-
-                    <UFormGroup label="Descricao" class="spanL">
-                        <UTextarea placeholder="Desrição do item" v-model="form.descricao" />
-                    </UFormGroup>
-
-                    
-                </section>
-
-                <UDivider label="Valores" class="mb-4" v-if="valores.length > 0" />
-
-                <section class="gridNaoFunciona">
-                    <UFormGroup v-for="valor in valores" :key="valor.id" :label="valor.nome">
-                        <UInput placeholder="00.00" v-model="valor.valor" />
-                    </UFormGroup>
-                </section>
-
-                <UDivider label="Totais" class="mb-4" />
-
-                <section class="gridNaoFunciona">
-                    <UFormGroup label="Quantidade">
-                        <UInput placeholder="00.00" v-model="form.quantidade" />
-                    </UFormGroup>
-
-                    <UFormGroup label="Valor total">
-                        <UInput placeholder="00.00" v-model="valorTotal" disabled />
-                    </UFormGroup>
+                    <FloatLabel class="spanL">
+                        <Textarea id="descricao" placeholder="Descrição do item" v-model="form.descricao" class="w-full " />
+                        <label for="descricao">Descrição</label>
+                    </FloatLabel>
                 </section>
 
                 
 
-                <template #footer>
-                    <div class="gapNaoFunciona">
-                        <UButton color="white" label="Cancelar" @click="fecharELimparCampos" />
-                        <UButton :label="form.id.length === 0 ? 'Avançar' : 'Salvar'" @click="insertItemOrcamento" />
-                    </div>
-                </template>
-            </UCard>
-        </UModal>
+                <Divider align="center" v-if="valores.length > 0" class="mb-10" >Valores</Divider>
+
+                <section class="gridNaoFunciona">
+                    <FloatLabel v-for="valor in valores" :key="valor.id" >
+                    <InputNumber 
+                        v-model="valor.valor"
+                        mode="currency"
+                        currency="BRL"
+                        :id="valor.id"
+                        class="w-full mb-4"
+                    />
+                    <label :for="valor.id">{{ valor.nome }}</label>
+                    </FloatLabel>
+                    <!-- <UFormGroup v-for="valor in valores" :key="valor.id" :label="valor.nome">
+                        <UInput placeholder="00.00" v-model="valor.valor" />
+                    </UFormGroup> -->
+                </section>
+
+                <Divider align="center" class="mb-10">Totais</Divider>
+
+                <section class="gridNaoFunciona">
+                    <FloatLabel>
+                        <InputNumber v-model="form.quantidade" id="quantidade" class="w-full" />
+                        <label for="quantidade">Quantidade</label>
+                    </FloatLabel>
+                    <FloatLabel>
+                        <InputNumber 
+                            v-model="form.quantidade" 
+                            id="valorTotal" 
+                            mode="currency"
+                            currency="BRL"
+                            class="w-full"
+                        />
+                        <label for="valorTotal">Valor total</label>
+                    </FloatLabel>
+                </section>
+
+
+                <div class="gapNaoFunciona">
+                    <Button severity="warning" label="Cancelar" @click="fecharELimparCampos" />
+                    <Button :label="form.id.length === 0 ? 'Avançar' : 'Salvar'" @click="insertItemOrcamento" />
+                </div>
+            </div>
+        </Dialog>
     </div>
 </template>
 
@@ -129,7 +137,7 @@ const insertItemOrcamento = async () => {
 
             valores.value = valoresret;
             form.id = valoresret[0].codigoItemOrcamento;
-            toast.add({ title: "Item adicionado com sucesso", color: "fuchsia", timeout: 2000 })
+            toast.add({ detail: "Item adicionado com sucesso", severity: "success", life: 2000 })
         } else {
             var items = valores.value.map((v) => {
                 return {
@@ -155,16 +163,16 @@ const insertItemOrcamento = async () => {
                 }
             })
 
-            toast.add({ title: "Item salvo", color: "fuchsia", timeout: 2000 })
+            toast.add({ detail: "Item salvo", severity: "success", life: 2000 })
 
             fecharELimparCampos();
         }
     } catch (err) {
         if (err instanceof Error) {
-            return toast.add({ title: "Ops", description: err.message, color: "red", timeout: 5000 })
+            return toast.add({ summary: "Ops", detail: err.message, severity: "error", life: 5000 })
         }
 
-        toast.add({ title: "Ops", description: "Ocorreu um erro, tente novamente", color: "red", timeout: 3000 })
+        toast.add({ summary: "Ops", detail: "Ocorreu um erro, tente novamente", severity: "error", life: 3000 })
     }
 }
 
@@ -221,6 +229,7 @@ const valorTotal = computed(() => {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
+    margin-top: 20px;
     margin-bottom: 16px;
 }
 

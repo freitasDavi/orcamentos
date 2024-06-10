@@ -1,9 +1,9 @@
 <template>
-    <UCard>
-        <template #header>
+    <div class="flex flex-col gap-10 bg-white rounded-lg px-24 py-2">
+        <div class="p-10 bg-green-600">
             <h1 v-if="isEdit" class="text-2xl">Orçamento X</h1>
             <h1 v-else class="text-2xl">Novo orçamento</h1>
-        </template>
+        </div>
 
         <section class="bg-yellow-300">
             <form @submit.prevent="createOrcamento">
@@ -24,23 +24,21 @@
             </form>
         </section>
 
-        <template #footer>
-            <PecaOrcamentoForm :codigo-orcamento="id" ref="modal" v-on:update="refetchItems(id)" />
+        <PecaOrcamentoForm :codigo-orcamento="id" ref="modal" v-on:update="refetchItems(id)" />
 
 
-            <DataTable :value="orcItems" table-style="min-witdh: 50rem">
-                <Column field="nome" header="Nome"></Column>
-                <Column field="quantidade" header="Quantidade"></Column>
-                <!-- <Column field="valorUnitario" header="Valor unitário"></Column> -->
-                <Column field="valorTotal" header="Valor total"></Column>
-                <Column header="Ações">
-                    <template #body="slotProps">
-                        <Button icon="pi pi-pencil" @click="onClickEditItem(slotProps.data)" />
-                    </template>
-                </Column>
-            </DataTable>
-        </template>
-    </UCard>
+        <DataTable :value="orcItems" table-style="min-witdh: 50rem">
+            <Column field="nome" header="Nome"></Column>
+            <Column field="quantidade" header="Quantidade"></Column>
+            <!-- <Column field="valorUnitario" header="Valor unitário"></Column> -->
+            <Column field="valorTotal" header="Valor total"></Column>
+            <Column header="Ações">
+                <template #body="slotProps">
+                    <Button icon="pi pi-pencil" @click="onClickEditItem(slotProps.data)" />
+                </template>
+            </Column>
+        </DataTable>
+    </div>
 </template>
 
 <script setup lang="ts">

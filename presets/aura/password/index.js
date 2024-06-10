@@ -14,7 +14,7 @@ export default {
             // Colors
             'bg-surface-0 dark:bg-surface-900',
             'text-surface-700 dark:text-white/80',
-            'border-surface-200 dark:border-surface-700'
+            'border-surface-200 dark:border-surface-700',
         ]
     },
     meter: {

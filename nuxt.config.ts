@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "nuxt-primevue", "@nuxtjs/tailwindcss"],
+  modules: ["nuxt-primevue", "@nuxtjs/tailwindcss", "@vueuse/nuxt"],
   primevue: {
     options: {
       unstyled: true,

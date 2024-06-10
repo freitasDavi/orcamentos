@@ -1,38 +1,36 @@
 <template>
-    <UContainer>
+    <div class="px-10">
         <NuxtLink to="/orcamento/novo">
-            <UButton size="xl">Novo</UButton>
+            <Button label="Novo" class="mb-4" />
         </NuxtLink>
-        <UTable :loading="isLoading" :rows="data" :columns="columns">
-            <template #actions-data="{ row }">
-                <NuxtLink :to="`/orcamento/${row.id}`">
-                    <UButton color="gray" variant="ghost" icon="i-heroicons-pencil-square-solid" />
-                </NuxtLink>
-            </template>
-        </UTable>
-    </UContainer>
+        <DataTable :value="data" table-style="min-width: 50rem">
+            <Column field="id" header="Id"></Column>
+            <Column field="codigoCliente" header="Cliente"></Column>
+            <Column field="valorTotal" header="Valor Total"></Column>
+            <Column field="validade" header="Validade">
+                <template #body="slotProps">
+                    <p>{{ format(new Date(slotProps.data.validade), 'P', { locale: ptBR }) }}</p>
+                </template>
+            </Column>
+            <Column field="emissao" header="Emissão">
+                <template #body="slotProps">
+                    <p>{{ format(new Date(slotProps.data.emissao), 'P', { locale: ptBR }) }}</p>
+                </template>
+            </Column>
+            <Column header="Ações">
+                <template #body="slotProps">
+                    <NuxtLink :to="`/orcamento/${slotProps.data.id}`">
+                        <Button color="gray" variant="ghost" icon="pi pi-pencil" />
+                    </NuxtLink>
+                </template>
+            </Column>
+        </DataTable>
+    </div>
 </template>
 
 <script setup lang="ts">
-
-const columns = [{
-    key: 'id',
-    label: 'Id'
-}, {
-    key: 'codigoCliente',
-    label: 'Código Cliente'
-}, {
-    key: 'valorTotal',
-    label: 'Valor'
-}, {
-    key: 'validade',
-    label: 'Validade'
-}, {
-    key: 'emissao',
-    label: 'Emissão'
-}, {
-    key: 'actions'
-}]
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale";
 
 const isLoading = ref(false)
 const data = ref([])
