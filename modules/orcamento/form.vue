@@ -1,13 +1,13 @@
 <template>
-    <div class="flex flex-col gap-10 bg-white rounded-lg px-24 py-2">
-        <div class="p-10 bg-green-600">
+    <div class="flex flex-col gap-10 bg-white rounded-lg px-24 py-2 mx-10">
+        <div class="p-5 bg-green-600">
             <h1 v-if="isEdit" class="text-2xl">Orçamento X</h1>
             <h1 v-else class="text-2xl">Novo orçamento</h1>
         </div>
 
-        <section class="bg-yellow-300">
+        <section class="px-5">
             <form @submit.prevent="createOrcamento">
-                <section class="flex gap-2 items-end">
+                <section class="flex flex-col gap-2">
                     <div class="flex-1">
                         <label for="cliente">Cliente</label>
                         <InputGroup>
@@ -16,28 +16,34 @@
                             <CadastroCliente />
                         </InputGroup>
                     </div>
-                    <Calendar v-model="dataValidade" dateFormat="dd/mm/yy" showIcon class="h-8 flex-1" />
+                    <label for="descricao" >Descrição</label>
+                    <InputText id="descricao" class="h-8" v-model="descricao" />
+
+                    <label for="dataValidade">Data de Validade</label>
+                    <Calendar id="dataValidade" v-model="dataValidade" dateFormat="dd/mm/yy" showIcon class="h-8 flex-1" />
+
+                    <div class="w-1/4 mt-2 flex justify-end">
+                        <Button type="submit" class="h-8" size="small" :label="id ? 'Salvar' : 'Avançar'" />
+                    </div>
                 </section>
-                <div>
-                    <Button type="submit" class="h-8" label="Salvar" />
-                </div>
             </form>
         </section>
 
-        <PecaOrcamentoForm :codigo-orcamento="id" ref="modal" v-on:update="refetchItems(id)" />
-
-
-        <DataTable :value="orcItems" table-style="min-witdh: 50rem">
-            <Column field="nome" header="Nome"></Column>
-            <Column field="quantidade" header="Quantidade"></Column>
-            <!-- <Column field="valorUnitario" header="Valor unitário"></Column> -->
-            <Column field="valorTotal" header="Valor total"></Column>
-            <Column header="Ações">
-                <template #body="slotProps">
-                    <Button icon="pi pi-pencil" @click="onClickEditItem(slotProps.data)" />
-                </template>
-            </Column>
-        </DataTable>
+        <section class="px-5">
+            <PecaOrcamentoForm :codigo-orcamento="id" ref="modal" v-on:update="refetchItems(id)" />
+        
+            <DataTable :value="orcItems" table-style="min-witdh: 50rem">
+                <Column field="nome" header="Nome"></Column>
+                <Column field="quantidade" header="Quantidade"></Column>
+                <!-- <Column field="valorUnitario" header="Valor unitário"></Column> -->
+                <Column field="valorTotal" header="Valor total"></Column>
+                <Column header="Ações">
+                    <template #body="slotProps">
+                        <Button icon="pi pi-pencil" @click="onClickEditItem(slotProps.data)" />
+                    </template>
+                </Column>
+            </DataTable>
+        </section>
     </div>
 </template>
 
@@ -55,6 +61,7 @@ const id = ref("");
 const cliente = ref()
 const valorTotal = ref(0)
 const dataValidade = ref(new Date())
+const descricao = ref('')
 const modal = ref<InstanceType<typeof PecaOrcamentoForm> | null>(null)
 const orcItems = ref<PecasOrcamento[]>([]);
 
@@ -73,6 +80,7 @@ onMounted(async () => {
         cliente.value = props.initialValue.codigoCliente;
         valorTotal.value = props.initialValue.valorTotal;
         dataValidade.value = new Date(props.initialValue.validade);
+        descricao.value = props.initialValue.descricao;
     }
 })
 
@@ -83,7 +91,8 @@ const createOrcamento = async () => {
             "codigoCliente": cliente.value,
             "validade": dataValidade.value,
             "emissao": new Date(),
-            "valorTotal": valorTotal.value
+            "valorTotal": valorTotal.value,
+            "descricao": descricao.value
         }
     })
 
@@ -111,7 +120,6 @@ const onClickEditItem = (row: PecasOrcamento) => {
         quantidade: row.quantidade,
         valorTotal: row.valorTotal,
         id: row.id
-
     })
 }
 </script>

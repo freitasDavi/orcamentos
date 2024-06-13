@@ -4,7 +4,7 @@
             <Button label="Novo" class="mb-4" />
         </NuxtLink>
         <DataTable :value="data" table-style="min-width: 50rem">
-            <Column field="id" header="Id"></Column>
+            <Column field="descricao" header="Descrição"></Column>
             <Column field="codigoCliente" header="Cliente"></Column>
             <Column field="valorTotal" header="Valor Total"></Column>
             <Column field="validade" header="Validade">

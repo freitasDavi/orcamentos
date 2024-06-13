@@ -7,19 +7,20 @@
                 <section class="gridNaoFunciona">
                     <FloatLabel for="peca">
                     <Dropdown id="peca" class="w-full" v-model="form.codigoPeca" :options="pecas"
-                                option-label="descricao" option-value="id" @update:model-value="(id: string) => onChangeSelectedPeca(id)" />
-                                <label for="peca">Peça</label>
+                        option-label="descricao" option-value="id" @update:model-value="(id: string) => onChangeSelectedPeca(id)" />
+                        <label for="peca">Peça</label>
                     </FloatLabel>
 
                     <FloatLabel>
-                        <InputText id="nome" placeholder="Nome" v-model="form.nome" />
+                        <InputText id="nome" v-model="form.nome" class="w-full" />
                         <label for="nome">Nome</label>
                     </FloatLabel>
 
-                    <FloatLabel class="spanL">
-                        <Textarea id="descricao" placeholder="Descrição do item" v-model="form.descricao" class="w-full " />
-                        <label for="descricao">Descrição</label>
-                    </FloatLabel>
+                    <div class="spanL flex flex-col">
+                        <label for="descricao" class="text-sm mx-2 text-gray-200">Descrição</label>
+                        <Textarea id="descricao" v-model="form.descricao"  />
+                    </div>
+                    
                 </section>
 
                 

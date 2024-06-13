@@ -7,6 +7,7 @@ export type Orcamento = {
     validade: Date;
     emissao: Date;
     valorTotal:number;
+    descricao: string;
 }
 
 
