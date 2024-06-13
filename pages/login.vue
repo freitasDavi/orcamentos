@@ -1,25 +1,25 @@
 
 
 <template>
-    <UContainer class="w-2/4 h-full flex items-center justify-center">
-        <UCard class="w-2/3 ">
-            <template #header>
-                Login
-            </template>
+    <section class="w-full h-full flex items-center justify-center">
+        <div class="w-1/3 bg-white p-10 rounded-lg shadow-md">
+            <h2 class="text-3xl font-serif text-slate-900 my-4">Lefil - Login</h2>
             <section class="flex flex-col gap-6">
-                <UFormGroup label="Email">
-                    <UInput placeholder="email@mail.com" v-model="email" />
-                </UFormGroup>
-                <UFormGroup label="Password">
-                    <UInput placeholder="*****" v-model="password" type="password" />
-                </UFormGroup>
+                <FloatLabel>
+                    <InputText id="email" v-model="email" class="w-full" />
+                    <label for="email">Email</label>
+                </FloatLabel>
+                <FloatLabel>
+                    <Password id="password" v-model="password" class="w-full" panel-class="w-full" input-class="w-full"  :feedback="false" :toggle-mask="true"  />
+                    <label for="password">Password</label>
+                </FloatLabel>
                 <div class="w-ful flex justify-end gap-2">
-                    <UButton @click="handleLogin" size="md" color="red">Registrar</UButton>
-                    <UButton @click="handleLogin" size="md">Login</UButton>
+                    <Button @click="handleLogin" severity="help"  label="Registar" />
+                    <Button @click="handleLogin" severity="success"  label="Login" />
                 </div>
             </section>
-        </UCard>
-    </UContainer>
+        </div>
+    </section>
 </template>
 
 
@@ -46,10 +46,25 @@ const handleLogin = async () => {
         })
 
         
-        toast.add({ title: "Uepa", color: "fuchsia", timeout: 5000, callback: () => handleSuccess(response.msg) })
+        toast.add({
+            severity: 'success',
+            summary: "Sucesso",
+            detail: "Login realizado com sucesso",
+            life: 1995
+        })
+
+        setTimeout(() => {
+            handleSuccess(response.msg)
+        }, 2000)
+        //toast.add({ title: "Uepa", color: "fuchsia", timeout: 5000, callback: () => handleSuccess(response.msg) })
     } catch (err) {
         console.log(err);
-        toast.add({ title: "Uepa", color: "red" })
+        toast.add({ 
+            summary: "Opa",
+            detail: "Login ou senha incorretos",
+            severity: "error",
+            life: 2000
+         })
     }
 }
 

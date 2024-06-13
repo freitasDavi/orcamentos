@@ -1,7 +1,7 @@
 <template>
-    <UContainer>
+    <div>
         <Form :is-edit="false" />
-    </UContainer>
+    </div>
 </template>
 
 
